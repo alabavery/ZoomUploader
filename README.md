@@ -9,5 +9,5 @@
 - create DockerHub account if you don't have one
 - `> docker login --username=yourhubusername --email=youremail@company.com`
 - You should now be able to start the script through `~/.zoom-uploader/cmd/start.sh` (subsequent starts will be much faster)
-- Note that, if you have Docker set up to start on boot, this script will also start on boot (Docker automatically starts the script when Docker starts)
+- Note that, if you have Docker set up to start on boot, this script will also start on boot (Docker automatically starts the script when Docker starts). You still need to start it the first time manually, however.
 - You can then stop it through `~/.zoom-uploader/cmd/stop.sh`
