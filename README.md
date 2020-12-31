@@ -1,5 +1,5 @@
-# Automatically upload Zoom recordings to Google Drive
-
+# ZoomUploader
+Automatically upload Zoom recordings to Google Drive
 ## General setup
 ### This is the part of the setup that is needed no matter how you plan to run the program
 - `> mkdir $HOME/.zoom-uploader`
