@@ -1,0 +1,1 @@
+docker kill zoom-uploader && docker rm zoom-uploader

@@ -1,0 +1,6 @@
+{
+    "zoom_directory_path": "/zoom_dir_mount",
+    "config_directory_path": "/config_dir_mount",
+    "max_seconds_to_wait_for_download": 3600,
+    "repository_path": "/"
+}
