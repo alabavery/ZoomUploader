@@ -9,22 +9,25 @@ def watch_new_dir(dir_name, zoom_base_dir, max_seconds_to_wait):
     from upload import upload_video
 
     new_dir_path = os.path.join(zoom_base_dir, dir_name)
+    print("Monitoring {dir} for mp4 file".format(new_dir_path))
     
-    # every 10 seconds, see if an m4a file exists in the newly created directory
+    # every 10 seconds, see if an mp4 file exists in the newly created directory
     POLL_INTERVAL_SECONDS = 10
     seconds_waited = 0
     while seconds_waited < max_seconds_to_wait:
         video_files = get_video_files(new_dir_path)
         if len(video_files) > 0:
-            # return upload_video(os.path.join(new_dir_path, video_files[0]), video_files[0])
-            return os.path.join(new_dir_path, video_files[0])
+            print("Saw .mp4 file :)")
+            # name the Gdrive file as the directory
+            return upload_video(os.path.join(new_dir_path, video_files[0]), dir_name)
 
         time.sleep(POLL_INTERVAL_SECONDS)
         seconds_waited += POLL_INTERVAL_SECONDS
+    print("NEVER SAW FILE APPEAR")
     
 
 def get_video_files(dir_path):
-    return [file_name for file_name in os.listdir(dir_path) if file_name.endswith('.m4a')]
+    return [file_name for file_name in os.listdir(dir_path) if file_name.endswith('.mp4')]
 
 
 
