@@ -2,15 +2,15 @@ print('python invoked')
 import sys
 import json
 import os
+import sys
+import time
 from read_settings import get_value
+from upload import upload_video
 
 
 def watch_new_dir(dir_name, zoom_base_dir, max_seconds_to_wait):
-    import time
-    from upload import upload_video
-
     new_dir_path = os.path.join(zoom_base_dir, dir_name)
-    print("Monitoring \"{dir}\" for mp4 file".format(dir=new_dir_path))
+    print("Monitoring \"{dir}\" for mp4 file".format(dir=new_dir_path), flush=True)
     
     # every 10 seconds, see if an mp4 file exists in the newly created directory
     POLL_INTERVAL_SECONDS = 10
@@ -31,22 +31,22 @@ def get_video_files(dir_path):
 
 if __name__ == '__main__':
     print('running python main')
-    # pretty sure there's only ever one line, but seems we have to iterate to access stdin
-    for line in sys.stdin:
-        print("line={l}".format(l=line))
-        if "ISDIR" in line:
-            print("Found create directory; line is \"{l}\"".format(l=line))
-            
-            line_segments = line.strip().split()
-            new_dir_name = line_segments[-1]
-            base_directory_path = line_segments[0]
-            print("new_dir_name: \"{new_dir}\"; base_dir_path: \"{base_dir}\"".format(new_dir=new_dir_name, base_dir=base_directory_path))
+    args = sys.argv[1:]
+    print("arguments: ", args)
+    # seems that ISDIR and CREATE are sometimes/always combined into one arg: "ISDIR,CREATE"
+    # so easiest way to check that they are both present is simply to search args as a string
+    str_args = str(args)
+    if "ISDIR" in str_args and "CREATE" in str_args:
+        print("Found create directory!")
+        # last argument is the created dir
+        new_dir_name = args[-1]
+        # first argument is the dir inotifywait was watching
+        base_directory_path = args[0]
+        print("new_dir_name: \"{new_dir}\"; base_dir_path: \"{base_dir}\"".format(new_dir=new_dir_name, base_dir=base_directory_path))
 
-            file_name = watch_new_dir(new_dir_name, base_directory_path, get_value('max_seconds_to_wait_for_download'))
-            file_path = os.path.join(base_directory_path, new_dir_name, file_name)
-            print("mp4 file path: \"{f}\"".format(f=file_path))
+        file_name = watch_new_dir(new_dir_name, base_directory_path, get_value('max_seconds_to_wait_for_download'))
+        file_path = os.path.join(base_directory_path, new_dir_name, file_name)
+        print("mp4 file path: \"{f}\"".format(f=file_path), flush=True)
 
-            # name the Gdrive file as the directory
-            upload_video(file_path, new_dir_name)
-
-            break
+        # name the Gdrive file as the directory
+        upload_video(file_path, new_dir_name)

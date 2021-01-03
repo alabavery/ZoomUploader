@@ -4,7 +4,10 @@ from drive_service import get_drive_service
 def upload_video(path_on_disk, name_to_give_in_drive):
     file_metadata = {'name': name_to_give_in_drive}
     media = MediaFileUpload(path_on_disk, mimetype='video/mp4')
-    file = get_drive_service().files().create(body=file_metadata,
+    print("Made media file upload", flush=True)
+    ds = get_drive_service()
+    print("Got drive service", flush=True)
+    f = ds.files().create(body=file_metadata,
                                         media_body=media,
                                         fields='id').execute()
-    print('File ID: %s' % file.get('id'))
+    print('File ID: %s' % f.get('id'))

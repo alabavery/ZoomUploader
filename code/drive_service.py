@@ -25,9 +25,10 @@ def get_drive_service():
             config_dir_path = get_value('config_directory_path')
             flow = InstalledAppFlow.from_client_secrets_file(
                 config_dir_path + '/credentials.json', SCOPES)
+            print("starting local server for creds", flush=True)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('token.pickle', 'wb') as token:
             pickle.dump(creds, token)
-
+    print("got credentials", flush=True)
     return build('drive', 'v3', credentials=creds)
